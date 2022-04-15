@@ -1,4 +1,4 @@
-
+require 'pry'
 require 'ipaddress'
 
 property :cluster_name, String, name_property: true
@@ -69,6 +69,12 @@ action :create do
 
   # Create the cluster
   powershell_out_with_options!("New-Cluster -Name #{new_resource.cluster_name} -Node #{node['hostname']} -StaticAddress #{new_resource.cluster_ip} -Force") unless cluster_exist?(new_resource.cluster_name)
+  # powershell_script 'create cluster' do
+  #   command "New-Cluster -Name #{new_resource.cluster_name} -Node #{node['hostname']} -StaticAddress #{new_resource.cluster_ip} -Force"
+  #   user new_resource.run_as_user
+  #   password new_resource.run_as_password
+  # end
+  # ) unless cluster_exist?(new_resource.cluster_name)
   # Add any available disks to the cluster
   powershell_out_with_options('Get-ClusterAvailableDisk | Add-ClusterDisk')
 
